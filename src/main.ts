@@ -1,5 +1,8 @@
 import { createApp } from 'vue';
 
+import Vueform from "@vueform/vueform";
+import vueformConfig from "../vueform.config";
+
 import { init, locations } from '@contentful/app-sdk';
 
 import AppConfigLocation from './locations/AppConfigLocation.vue';
@@ -13,7 +16,9 @@ import LocalhostWarning from './components/LocalhostWarning.vue';
 
 if (process.env.NODE_ENV === 'development' && window.self === window.top) {
   // You can remove this if block before deploying your app
-  createApp(LocalhostWarning).mount('#app');
+  const app = createApp(LocalhostWarning);
+  app.use(Vueform, vueformConfig);
+  app.mount('#app');
 } else {
   init((sdk) => {
     const locationsMap = {
@@ -29,7 +34,9 @@ if (process.env.NODE_ENV === 'development' && window.self === window.top) {
     // Select a component depending on a location in which the app is rendered.
     Object.entries(locationsMap).forEach(([locationKey, Component]) => {
       if (sdk.location.is(locationKey)) {
-        createApp(Component, { sdk }).mount('#app');
+        const app = createApp(Component, { sdk });
+        app.use(Vueform, vueformConfig);
+        app.mount('#app');
       }
     });
   });
