@@ -3,8 +3,34 @@
   <div class="demo-container">
     <div class="place" v-for="(place, index) in places">
       <div class="place-info">
-        <p>{{ place.fields.name[locale] }}</p>
-        <p></p>
+        <div class="place-info-main">
+          <div class="place-info-text">
+            <p>{{ place.fields.name[locale] }}</p>
+            <Vueform>
+              <SelectElement
+                name="select"
+                :placeholder="'eating'"
+                :items="['Vue.js', 'React', 'AngularJS']"
+              />
+            </Vueform>
+            <Vueform>
+              <SelectElement
+                name="select"
+                :placeholder="'status'"
+                :items="['Vue.js', 'React', 'AngularJS']"
+              />
+            </Vueform>
+            <p>£25</p>
+            <p>8:00 - 20:00</p>
+
+            <!-- above should be an anchor tag -->
+            <a v-if="place.fields.website" :href="place.fields.website[locale]">{{ place.fields.name[locale] }} Website</a>
+          </div>
+          <div class="place-info-map">MAP PLACEHOLDER</div>
+        </div>
+        <div v-if="place.fields.description" class="place-info-notes">
+          <p>{{ place.fields.description[locale] }}</p>
+        </div>
       </div>
 
       <img
@@ -79,9 +105,6 @@ onMounted(async () => {
         image,
       };
 
-      console.log("Liam:entryObj");
-      console.log(entryObj);
-
       return entryObj;
     })
   );
@@ -107,9 +130,53 @@ body {
 }
 
 .place {
+  background-color: #fff;
+  padding: 1rem;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   margin-bottom: 1rem;
+}
+
+.place-info,
+.place-info-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.place-info {
+  flex: 1;
+}
+
+.place-info-text {
+  width: 100%;
+  padding-right: 5rem;
+}
+
+.place-info-map {
+  width: 100%;
+  border: 1px solid black;
+  padding: 1rem;
+}
+
+.place-info-text p {
+  margin: 0;
+  padding: 0;
+}
+
+.place-info-main {
+  padding-right: 1rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.place-info-notes {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  padding: 1rem;
+  margin-right: 1rem;
 }
 </style>
